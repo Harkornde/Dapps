@@ -21,7 +21,7 @@ function App() {
     if (typeof window.ethereum !== "undefined") {
       await requestAccount();
       const provider = new ethers.BrowserProvider(window.ethereum);
-      const contractAddress = "0x23e474C90C9f37B6AF9dc17DFf5fF8A4264d3914";
+      const contractAddress = "0x76c0c8d78acb2464d8a42daf22c66714e90e0b34";
 
       const signer = await provider.getSigner();
       const contract = new ethers.Contract(
@@ -31,10 +31,9 @@ function App() {
       );
 
       try {
-        const transaction = await contract.setMessage(imput);
+        const transaction = await contract.setMessage(colect);
         await transaction.wait();
         console.log("THERE");
-        UseImput(" ");
       } catch (err) {
         console.error("Error:", err);
       }
@@ -46,7 +45,7 @@ function App() {
       await requestAccount();
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
-      const contractAddress = "0x23e474C90C9f37B6AF9dc17DFf5fF8A4264d3914";
+      const contractAddress = "0x76c0c8d78acb2464d8a42daf22c66714e90e0b34";
 
       const contract = new ethers.Contract(
         contractAddress,
@@ -57,6 +56,7 @@ function App() {
       try {
         const transaction = await contract.getMessage();
         Usecolet(transaction);
+        console.log(transaction);
       } catch (err) {
         console.error("Error:", err);
       }
@@ -65,24 +65,28 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Message Integrated</h1>
-      <input type="text" value={imput} onChange={WhenChange} />
+      <div className="container">
+        <h1>Message Integrated</h1>
+        <input className="input-box" type="text" value={imput} onChange={WhenChange} />
 
-      <button
-        onClick={() => {
-          setMessage();
-        }}
-      >
-        Set Message
-      </button>
-      <button
-        onClick={() => {
-          getMessage();
-        }}
-      >
-        Get Message
-      </button>
-      <h2>Get Message: {colect}</h2>
+        <button
+          className="button"
+          onClick={() => {
+            setMessage();
+          }}
+        >
+          Set Message
+        </button>
+        <button
+          className="button"
+          onClick={() => {
+            getMessage();
+          }}
+        >
+          Get Message
+        </button>
+        <h2>Get Message: {colect}</h2>
+      </div>
     </div>
   );
 }
