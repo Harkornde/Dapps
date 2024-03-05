@@ -4,24 +4,24 @@ import { ethers } from "ethers";
 import contractABI from "./abi.json";
 
 function App() {
-  const [imput, UseImput] = useState("");
-  const [colect, Usecolet] = useState("");
+  const [imput, setInput] = useState("");
+  const [colect, setColet] = useState("");
+
+  const contractAddress = "0x5DA65fA47AbdB0fCA8f8616E343732698C2c146C";
 
   function WhenChange(event) {
     const { value } = event.target;
-    console.log(value);
-    UseImput(value);
+    setInput(value); //imput = value
   }
 
   async function requestAccount() {
     await window.ethereum.request({ method: "eth_requestAccounts" });
   }
 
-  async function setMessage() {
+  async function setName() {
     if (typeof window.ethereum !== "undefined") {
       await requestAccount();
       const provider = new ethers.BrowserProvider(window.ethereum);
-      const contractAddress = "0x76c0c8d78acb2464d8a42daf22c66714e90e0b34";
 
       const signer = await provider.getSigner();
       const contract = new ethers.Contract(
@@ -31,22 +31,22 @@ function App() {
       );
 
       try {
-        const transaction = await contract.setMessage(colect);
+        const transaction = await contract.collectName(imput);
         await transaction.wait();
-        console.log("THERE");
+        console.log(imput);
+        setInput("");
       } catch (err) {
         console.error("Error:", err);
       }
     }
   }
 
-  async function getMessage() {
+  async function returnMessage() {
     if (typeof window.ethereum !== "undefined") {
       await requestAccount();
       const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const contractAddress = "0x76c0c8d78acb2464d8a42daf22c66714e90e0b34";
 
+      const signer = await provider.getSigner();
       const contract = new ethers.Contract(
         contractAddress,
         contractABI,
@@ -54,36 +54,59 @@ function App() {
       );
 
       try {
-        const transaction = await contract.getMessage();
-        Usecolet(transaction);
-        console.log(transaction);
+        const transaction = await contract.returnFullName();
+        setColet(transaction);
+        // console.log(transaction);
       } catch (err) {
         console.error("Error:", err);
       }
     }
   }
+
+  // async function returnMessage() {
+  //   if (typeof window.ethereum !== "undefined") {
+  //     await requestAccount();
+  //     const provider = new ethers.BrowserProvider(window.ethereum);
+  //     const signer = await provider.getSigner();
+
+  //     const contracts = new ethers.Contract(
+  //       contractAddress,
+  //       contractABI,
+  //       signer
+  //     );
+
+  //     try {
+  //       const transaction = contracts.returnFullNam;
+  //       console.log(transaction);
+  //       console.log("message retrieved successful");
+  //     } catch (err) {
+  //       console.error("Error:", err);
+  //     }
+  //   }
+  // }
 
   return (
     <div className="App">
       <div className="container">
-        <h1>Message Integrated</h1>
-        <input className="input-box" type="text" value={imput} onChange={WhenChange} />
+        <h1>Name Input</h1>
+        <input
+          placeholder="Full Name"
+          className="input-box"
+          type="text"
+          value={imput}
+          onChange={WhenChange}
+        />
 
         <button
           className="button"
           onClick={() => {
-            setMessage();
+            setName();
           }}
         >
-          Set Message
+          Save Name
         </button>
-        <button
-          className="button"
-          onClick={() => {
-            getMessage();
-          }}
-        >
-          Get Message
+        <button className="button" onClick={returnMessage}>
+          Check Name
         </button>
         <h2>Get Message: {colect}</h2>
       </div>

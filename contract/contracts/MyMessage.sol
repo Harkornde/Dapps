@@ -1,23 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-// Uncomment this line to use console.log
-// import "hardhat/console.sol";
-
-
-
-contract MyMessage{
-    string public message;
+contract Namings{
+    string public fullName;
 
     constructor(string memory initialMessage) {
-        message = initialMessage;
+        fullName = initialMessage; 
     }
 
-    function setMessage(string memory newMessage) public {
-        message = newMessage;
+    function collectName(string memory newMessage) public {
+        fullName = newMessage;
     }
 
-    function getMessage() public view returns (string memory) {
-        return message;
+    function returnFullName() public view returns (string memory) {
+        return fullName;
     }
 }
